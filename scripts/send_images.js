@@ -13,25 +13,16 @@
         }
         return src;
       }
-
-      if (element.tagName.toLowerCase() === 'a') {
-        var href = element.href;
-        if (imageDownloader.isImageURL(href)) {
-          imageDownloader.linkedImages[href] = '0';
-          return href;
-        }
-      }
-
-      var backgroundImage = window.getComputedStyle(element)['background-image'];
-      if (backgroundImage) {
-        var parsedURL = imageDownloader.extractURLFromStyle(backgroundImage);
-        if (imageDownloader.isImageURL(parsedURL)) {
-          return parsedURL;
-        }
-      }
-
       return '';
     },
+
+    mapElementAltText: function (element) {
+      if (element.tagName.toLowerCase() === 'img') {
+        return element.alt;
+      }
+      return '';
+    },
+
 
     extractURLFromStyle: function (url) {
       return url.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
@@ -58,26 +49,17 @@
   };
 
   imageDownloader.linkedImages = {};
+
   imageDownloader.images = [].slice.apply(document.getElementsByTagName('*'));
   imageDownloader.images = imageDownloader.images.map(imageDownloader.mapElement);
 
-  for (var i = 0; i < document.styleSheets.length; i++) { // Extract images from styles
-    var cssRules = document.styleSheets[i].cssRules;
-    if (cssRules) {
-      for (var j = 0; j < cssRules.length; j++) {
-        var style = cssRules[j].style;
-        if (style && style['background-image']) {
-          var url = imageDownloader.extractURLFromStyle(style['background-image']);
-          if (imageDownloader.isImageURL(url)) {
-            imageDownloader.images.push(url);
-          }
-        }
-      }
-    }
-  }
+  imageDownloader.alt_text = [].slice.apply(document.getElementsByTagName('*'));
+  imageDownloader.alt_text = imageDownloader.alt_text.map(imageDownloader.mapElementAltText);
 
   imageDownloader.images = imageDownloader.removeDuplicateOrEmpty(imageDownloader.images);
-  chrome.extension.sendMessage({ linkedImages: imageDownloader.linkedImages, images: imageDownloader.images });
+  imageDownloader.alt_text = imageDownloader.removeDuplicateOrEmpty(imageDownloader.alt_text);
+
+  chrome.extension.sendMessage({ linkedImages: imageDownloader.linkedImages, images: imageDownloader.images, alt: imageDownloader.alt_text });
 
   imageDownloader.linkedImages = null;
   imageDownloader.images = null;

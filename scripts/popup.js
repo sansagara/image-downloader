@@ -18,11 +18,12 @@
         ls.filter_url = $.trim(this.value);
       });
 
-    chrome.downloads.onDeterminingFilename.addListener(function (item, suggest) {
-      if (ls.folder_name) {
-        suggest({ filename: ls.folder_name + '/' + item.filename});
-      }
-    });
+    // chrome.downloads.onDeterminingFilename.addListener(function (item, suggest) {
+    //   if (ls.folder_name) {
+    //     chrome.extension.getBackgroundPage().console.log(item);
+    //     suggest({ filename: ls.folder_name + '/' + item.filename});
+    //   }
+    // });
 
     $('#download_button').on('click', downloadImages);
 
@@ -185,12 +186,14 @@
 
   var allImages = [];
   var visibleImages = [];
+  var altTexts = [];
   var linkedImages = {};
 
   // Add images to `allImages` and trigger filtration
   // `send_images.js` is injected into all frames of the active tab, so this listener may be called multiple times
   chrome.extension.onMessage.addListener(function (result) {
     $.extend(linkedImages, result.linkedImages);
+    $.extend(altTexts, result.alt);
     for (var i = 0; i < result.images.length; i++) {
       if (allImages.indexOf(result.images[i]) === -1) {
         allImages.push(result.images[i]);
@@ -357,7 +360,9 @@
       for (var i = 0; i < visibleImages.length; i++) {
         if ($('#image' + i).hasClass('checked')) {
           checkedImages++;
-          chrome.downloads.download({ url: visibleImages[i] });
+          chrome.extension.getBackgroundPage().console.log(visibleImages[i]);
+          chrome.extension.getBackgroundPage().console.log(altTexts[i]);
+          chrome.downloads.download({ url: visibleImages[i], filename: altTexts[i], conflictAction: 'uniquify' });
         }
       }
 

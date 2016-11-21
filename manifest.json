@@ -1,8 +1,8 @@
 {
   "name": "Image Downloader",
   "description": "Browse and download images on a web page.",
-  "version": "2.2.4",
-  "minimum_chrome_version": "31",
+  "version": "2.2.5",
+  "minimum_chrome_version": "32",
   "manifest_version": 2,
   "permissions": [
     "activeTab",
@@ -22,7 +22,7 @@
     "/images/download.png"
   ],
   "background": {
-    "scripts": ["/scripts/defaults.js"]
+    "scripts": ["/scripts/defaults.js", "/scripts/popup.js"]
   },
   "options_page": "/views/options.html"
 }
