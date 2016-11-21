@@ -1,5 +1,12 @@
-Image Downloader
+Image Downloader (Filename as Alt-Text Fork)
 ================
+This is a fork from vdsabev's image-downloader chrome extension. Only difference is that mine uses the image's alt-text as the filename to save the picture.
+
+To work, all your selected pictures must have an actual ALT text. If not, the order is going to be lost.
+
+Original Description
+================
+
 If you need to bulk download images from a web page, with this extension you can:
 - See images that the page contains and links to
 - Filter them by width, height, and URL; supports wildcard and regex
