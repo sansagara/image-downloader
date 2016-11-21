@@ -4,6 +4,8 @@ This is a fork from vdsabev's image-downloader chrome extension. Only difference
 
 To work, all your selected pictures must have an actual ALT text. If not, the order is going to be lost.
 
+-sansagara
+
 Original Description
 ================
 
