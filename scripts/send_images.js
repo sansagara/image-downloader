@@ -18,7 +18,17 @@
 
     mapElementAltText: function (element) {
       if (element.tagName.toLowerCase() === 'img') {
-        return element.alt;
+        var alt = element.alt;
+        if (typeof alt !== 'undefined' && alt !== false) {
+          var altIndex = alt.indexOf('/');
+          if (altIndex >= 0) {
+            alt = alt.substr(alt.lastIndexOf('/') + 1);
+          }
+          alt = alt.split('.').join("");
+          return alt;
+        } else {
+          return 'no-alt-image';
+        }
       }
       return '';
     },

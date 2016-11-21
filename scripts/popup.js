@@ -361,8 +361,10 @@
         if ($('#image' + i).hasClass('checked')) {
           checkedImages++;
           chrome.extension.getBackgroundPage().console.log(visibleImages[i]);
-          chrome.extension.getBackgroundPage().console.log(altTexts[i]);
-          chrome.downloads.download({ url: visibleImages[i], filename: altTexts[i], conflictAction: 'uniquify' });
+          var fileName = altTexts[i] + '.' + visibleImages[i].substr(visibleImages[i].lastIndexOf('.') + 1);
+          chrome.extension.getBackgroundPage().console.log(fileName);
+
+          chrome.downloads.download({ url: visibleImages[i], filename: fileName, conflictAction: 'uniquify' });
         }
       }
 
